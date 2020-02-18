@@ -1,0 +1,151 @@
+{% load static %}
+<div class="sidebar" data-color="orange" data-image="../../static/root/img/sidebar.jpg">
+    <div class="sidebar-wrapper">
+        <div class="logo">
+            <a href="/cuentas/home/" class="simple-text">
+                <!-- Name Dashboard Here -->
+                Voyager
+            </a>
+        </div>
+        <ul class="nav">
+            {% if 'crud_empresa' in request.session.permissions or 'visualizar_usuarios' in request.session.permissions or 'visualizar_clientes' in request.session.permissions %}
+            <li class="nav-item">
+                <a class="nav-link" data-toggle="collapse" href="#adminUsersDropdown">
+                    <i class="nc-icon nc-badge"></i>
+                    <p>Administración de <br>Usuarios<b class="caret"></b></p>
+                </a>
+                <div class="collapse" id="adminUsersDropdown">
+                    <ul class="nav">
+                        {% if 'visualizar_empresa' in request.session.permissions %}
+                            <li>
+                                <a class="nav-link" href="/cuentas/empresas">
+                                    <span>Lista de Empresas</span>
+                                </a>
+                            </li>
+                        {% endif %}
+                        {% if 'visualizar_usuarios' in request.session.permissions or 'visualizar_clientes' in request.session.permissions %}
+                          {% if request.session.userrole == 'Soporte' or request.session.userrole == 'Ventas' or request.session.userrole == 'Facturacion' %}
+                              <li class="nav-item ">
+                                  <a class="nav-link" href="/cuentas/usuarios">
+                                      <span>Lista de Clientes</span>
+                                  </a>
+                              </li>
+                              {%else%}
+                              <li class="nav-item ">
+                                  <a class="nav-link" href="/cuentas/usuarios">
+                                      <span>Lista de Usuarios</span>
+                                  </a>
+                              </li>
+                          {% endif %}
+                        {% endif %}
+                    </ul>
+                </div>
+            </li>
+            {% endif %}
+            {% if request.session.userrole == 'Director' or request.session.userrole == 'Soporte' or request.session.userrole == 'Cliente' or request.session.userrole == 'Ventas' or request.session.userrole == 'SuperUser' or request.session.userrole == 'Facturacion' or request.session.userrole == 'Gerente' %}
+              {% if request.session.userrole == 'Soporte' or request.session.userrole == 'SuperUser' %}
+                <!-- <li class="nav-item">
+                    <a class="nav-link" data-toggle="collapse" href="#trackingDropdown">
+                        <i class="nc-icon nc-delivery-fast"></i>
+                        <p>Tracking<b class="caret"></b></p>
+                    </a>
+                    <div class="collapse" id="trackingDropdown">
+                        <ul class="nav">
+                            <li class="nav-item">
+                                <a class="nav-link" href="#">
+                                    <span>Consultar tracking</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </li> -->
+              {% endif %}
+              <li class="nav-item">
+                  <a class="nav-link" data-toggle="collapse" href="#procesamientoDropdown">
+                      <i class="nc-icon nc-notes"></i>
+                      {% if request.session.userrole == 'Director' or request.session.userrole == 'Gerente' or request.session.userrole == 'Soporte' or request.session.userrole == 'Ventas' or request.session.userrole == 'SuperUser' or request.session.userrole == 'Facturacion' %}
+                        <p>Procesamiento y <br>Reportes<b class="caret"></b></p>
+                      {% elif request.session.userrole == 'Cliente' %}
+                        <p>Ingreso de <br>Muestra<b class="caret"></b></p>
+                      {% endif %}
+                  </a>
+                  <div class="collapse" id="procesamientoDropdown">
+                      <ul class="nav">
+                          {% if 'ingresar_muestra' in request.session.permissions %}
+                              <li class="nav-item">
+                                  <a class="nav-link" href="/reportes/ingreso_cliente">
+                                      <span>Ingresar muestra</span>
+                                  </a>
+                              </li>
+                          {% endif %}
+                          {%  if 'visualizar_orden_interna' in request.session.permissions  %}
+                          <li class="nav-item">
+                              <a class="nav-link" href="/reportes/ordenes_internas">
+                                  <span>Órdenes internas</span>
+                              </a>
+                          </li>
+                          {% endif %}
+                      </ul>
+                  </div>
+              </li>
+            {% endif %}
+            {% if 'visualizar_cotizacion' in request.session.permissions or 'consultar_catalogo_analisis' in request.session.permissions or 'descargar_csv' in request.session.permissions %}
+            <li class="nav-item">
+                <a class="nav-link" data-toggle="collapse" href="#ventasDropdown">
+                    <i class="nc-icon nc-cart-simple"></i>
+                    <p>Ventas<b class="caret"></b></p>
+                </a>
+                <div class="collapse" id="ventasDropdown">
+                    <ul class="nav">
+                        {% if 'consultar_catalogo_analisis' in request.session.permissions %}
+                            <li class="nav-item">
+                                <a class="nav-link" href="/ventas/ver_catalogo">
+                                    <span>Catálogo de análisis</span>
+                                </a>
+                            </li>
+                        {% endif %}
+                        {% if 'visualizar_cotizacion' in request.session.permissions or 'consultar_cotizacion' in request.session.permissions %}
+                            <li class="nav-item">
+                                <a class="nav-link" href="/ventas/cotizaciones">
+                                    <span>Cotizaciones</span>
+                                </a>
+                            </li>
+                        {% endif %}
+                        {% if 'descargar_csv' in request.session.permissions %}
+                            <li class="nav-item">
+                                <a class="nav-link" href="/ventas/exportar_datos">
+                                    <span>Exportar datos</span>
+                                </a>
+                            </li>
+                        {% endif %}
+                    </ul>
+                </div>
+            </li>
+            {% endif %}
+            <li class="nav-item">
+                <a class="nav-link" href="/cuentas/home">
+                    <i class="nc-icon nc-circle-09"></i>
+                    <p>Mi Perfil<b class="caret"></b></p>
+                </a>
+            </li>
+            <!-- perfil -->
+            <li class="nav-item d-block d-sm-none">
+                <a class="nav-link" data-toggle="collapse" href="#profileDropdown">
+                    <i class="nc-icon nc-circle-09"></i>
+                    <p>{{ request.session.username }}<b class="caret"></b></p>
+                </a>
+                <div class="collapse" id="profileDropdown">
+                    <ul class="nav">
+                        <!-- cerrar sesion -->
+                        <li class="nav-item">
+                            <a class="nav-link" href="/cuentas/logout/">
+                                <span>Cerrar sesión</span><i class="nc-icon nc-button-power"></i>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </li>
+            <!-- More Links Here -->
+        </ul>
+    </div>
+</div>
