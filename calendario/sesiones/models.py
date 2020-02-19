@@ -6,6 +6,7 @@ class Session(models.Model):
     idSession = models.AutoField(primary_key=True)
     name = models.CharField(max_length=50, blank=True)
     date = models.DateField(null=False, blank=False)
+    isClass = models.BooleanField(null=False, blank=False, default=True)
     
     position = models.IntegerField()
     next_session = models.IntegerField()
