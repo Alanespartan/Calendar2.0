@@ -5,8 +5,8 @@ from datetime import datetime, date
 class Session(models.Model):
     idSession = models.AutoField(primary_key=True)
     name = models.CharField(max_length=50, blank=True)
-    date = models.DateField(null=False, blank=False)
     isClass = models.BooleanField(null=False, blank=False, default=True)
+    name = models.CharField(max_length=1000, blank=True)
     
     position = models.IntegerField()
     next_session = models.IntegerField()
@@ -30,6 +30,22 @@ class Session(models.Model):
     def getPrevious(self):
         return self.previous_session
     
-class Group(models.Model):
-    head = models.IntegerField()
-    tail = models.IntegerField()
+    def __str__(self):
+        return "%s" % (self.name)
+    
+class Calendar(models.Model):
+    idCalendar = models.AutoField(primary_key=True)
+    name = models.CharField(max_length=100, null=False)
+    head = models.IntegerField(null=True, blank=True)
+    tail = models.IntegerField(null=True, blank=True)
+    
+    def __str__(self):
+        return "%s" % (self.name)
+    
+class CalendarSession(models.Model):
+    idCalendarSession = models.AutoField(primary_key=True)
+    calendar = models.ForeignKey(Calendar,on_delete=models.CASCADE)
+    session = models.ForeignKey(Session,on_delete=models.CASCADE)
+
+    def __str__(self):
+        return "%s %s" % (self.calendar, self.session)

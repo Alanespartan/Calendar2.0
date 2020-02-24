@@ -2,43 +2,56 @@
 {% load static %}
 
 {% block content %}
-
+<div class="text-center display-4">
+    <strong>{{ group }}</strong>
+</div>
+<div class="text-sm-center text-md-right my-5">
+    <button type="button" class="btn btn-success" onclick="addSessionGroup({{ idGroup }})">
+        Agregar Sesión
+    </button>
+</div>
 {% if empty == 1 %}
     No hay sesiones
 {% else %}
-    <div class="text-center display-4">
-        <strong>Solución de problemas con programación</strong>
-    </div>
-    <div class="text-sm-center text-md-right my-5">
-        <button type="button" class="btn btn-success">Agregar Sesión</button>
-    </div>
-    <div class="row my-3 mx-0">
-        {% for s in sessions %}
-            {% if s.isClass %}
-            <div class="card col-6">
-            {% else %}
-            <div class="card col-6 bg-warning">
-            {% endif %}
-                <div class="card-body">
-                    <div class="row">
-                        <div class="w-75">
-                            <h5 class="card-title">{{ s.name }}</h5>
-                        </div>
-                        <div class="w-25">
-                            <button type="button" class="btn btn-primary">+</button>
-                            <button type="button" class="btn btn-danger">-</button>
-                            <button type="button" class="btn btn-dark">c</button>
-                        </div>
+<div class="row my-3 mx-0">
+   <div class="col-6 text-center">
+       <h2>Lunes</h2>
+   </div>
+   <div class="col-6 text-center">
+       <h2>Jueves</h2>
+   </div>
+</div>
+<div class="row mx-0"> <!-- Empieza row div -->
+    {% for s in sessions %}
+        {% if s.isClass %}
+        <div class="card col-6">
+        {% else %}
+        <div class="card col-6 bg-warning">
+        {% endif %}
+            <div class="card-body">
+                <div class="row">
+                    <div class="w-75">
+                        <h5 class="card-title">{{ s.name }}</h5>
                     </div>
-                    <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Id natus dolorem ut sequi, eum sed ipsa, quas cum quae itaque!</p>
+                    <div class="w-25">
+                        <button type="button" class="btn btn-primary btn-sm">
+                            <i class="fas fa-plus fa-xs"></i>
+                        </button>
+                        <button type="button" class="btn btn-danger btn-sm">
+                            <i class="fas fa-trash fa-xs"></i>
+                        </button>
+                        <button type="button" class="btn btn-dark btn-sm">
+                            <i class="fas fa-edit fa-xs"></i>
+                        </button>
+                    </div>
                 </div>
             </div>
-        {% endfor %}
-    </div>
+        </div>
+    {% endfor %}
+</div> <!-- Termina row div -->
 {% endif %}
-   
 {% endblock content %}
 
 {% block optionalJS %}
-    
+    <script src="{% static 'sesiones/js/add.js' %}" type="text/javascript"></script>
 {% endblock %}

@@ -2,5 +2,6 @@ from django.urls import path
 from . import views
 
 urlpatterns = [
-    path('', views.index, name=''),
+    path('calendarioFundamentos/', views.calendarioFundamentos, name='calendarioFundamentos'),
+    path('addSessionGroup/', views.addSessionGroup, name='addSessionGroup'),
 ]
