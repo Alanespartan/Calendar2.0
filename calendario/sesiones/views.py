@@ -6,16 +6,19 @@ from django.http import Http404
 from django.template import RequestContext
 
 from .models import Session, Calendar, CalendarSession
+from .forms import AddSessionForm
 
 def calendarioFundamentos(request):
     context = {}
     sessions = CalendarSession.objects.filter(calendar=1)
+    form = AddSessionForm()
     if sessions:
         context = {
             'empty': 0,
             'group': "Fundamentos de programación",
             'idGroup': 1,
-            'sessions': sessions
+            'sessions': sessions,
+            'form': form
         }
         return render(request, 'sesiones/index.html', context)
     # Si la cantidad de sesiones es 0
@@ -23,15 +26,15 @@ def calendarioFundamentos(request):
         context = {
             'empty': 1,
             'group': "Fundamentos de programación",
-            'idGroup': 1
+            'idGroup': 1,
+            'form': form
         }
         return render(request, 'sesiones/index.html', context)
     
 def addSessionGroup(request):
     if request.method == 'POST':
         if (request.POST.get('idGroup') and request.POST.get('body') and request.POST.get('type') and request.POST.get('name') ):
-
-            prevS = CalendarSession.objects.filter(calendar=request.POST.get('idGroup')).last().session.idSession
+            #prevS = CalendarSession.objects.filter(calendar=request.POST.get('idGroup')).last().session.idSession
             
             if(request.POST.get('type') == 0):
                 sessionType = True

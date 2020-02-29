@@ -1,12 +1,15 @@
 from django.db import models
 from datetime import datetime, date
 
+from djrichtextfield.models import RichTextField
+
 # Create your models here.
 class Session(models.Model):
     idSession = models.AutoField(primary_key=True)
     name = models.CharField(max_length=50, blank=True)
     isClass = models.BooleanField(null=False, blank=False, default=True)
-    name = models.CharField(max_length=1000, blank=True)
+    content = models.CharField(max_length=1000, blank=True)
+    content2 = RichTextField()
     
     position = models.IntegerField()
     next_session = models.IntegerField()
