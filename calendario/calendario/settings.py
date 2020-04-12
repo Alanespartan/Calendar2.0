@@ -39,7 +39,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'djrichtextfield',
+    'ckeditor',
+    'ckeditor_uploader',
 ]
 
 MIDDLEWARE = [
@@ -72,17 +73,21 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'calendario.wsgi.application'
 
-# TEXT EDITOR
-DJRICHTEXTFIELD_CONFIG = {
-    'js': ['//tinymce.cachefly.net/4.1/tinymce.min.js'],
-    'init_template': 'djrichtextfield/init/tinymce.js',
-    'settings': {
-        'menubar': False,
-        'plugins': 'link image',
-        'toolbar': 'bold italic | link image | removeformat',
-        'width': 700
-    }
+# CKEDITOR CONFIGURATION
+ 
+CKEDITOR_JQUERY_URL = 'https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js'
+ 
+CKEDITOR_UPLOAD_PATH = 'uploads/'
+CKEDITOR_IMAGE_BACKEND = "pillow"
+ 
+CKEDITOR_CONFIGS = {
+    'default': {
+        'toolbar': None,
+    },
 }
+
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_URL = '/media/'
 
 # Database
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
