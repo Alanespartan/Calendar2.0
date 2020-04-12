@@ -1,0 +1,17 @@
+{% extends 'root/base.html' %}
+{% load static %}
+
+{% block content %}
+
+<form method="post" novalidate>
+    {{ form.media }}
+    {{ form.content }}
+    <br>
+    <input class="mt-5" type="submit"/>
+</form>
+
+{% endblock content %}
+
+{% block optionalJS %}
+    
+{% endblock %}
