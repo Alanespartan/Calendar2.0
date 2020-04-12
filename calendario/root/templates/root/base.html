@@ -3,6 +3,8 @@
 <head>
 {% include './header.html' %}
 {% block optionalCSS %}{% endblock %}
+{% include './js.html' %}
+{% block optionalJS %}{% endblock %}
 </head>
 <body>
     <div class="container">
@@ -10,9 +12,9 @@
     </div>
     {% include './footer.html' %}
 </body>
-{% include './js.html' %}
+
 <script>
     var csrftoken = '{{ csrf_token }}';
 </script>
-{% block optionalJS %}{% endblock %}
+
 </html>
