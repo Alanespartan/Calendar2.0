@@ -133,4 +133,7 @@ venv.bak/
 
 #Ignorar Migraciones
 **/migrations/**
-calendario/calendario/settings.py
+voyager/voyager/settings.py
+
+/voyager/API_KEY.txt
+/voyager/API_KEY_recover_password.txt
