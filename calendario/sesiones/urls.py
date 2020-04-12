@@ -3,5 +3,5 @@ from . import views
 
 urlpatterns = [
     path('calendarioFundamentos/', views.calendarioFundamentos, name='calendarioFundamentos'),
-    path('addSessionGroup/', views.addSessionGroup, name='addSessionGroup'),
+    path('calendarioFundamentos/addSessionGroup', views.addSessionGroup, name='calendarioFundamentos/addSessionGroup'),
 ]
