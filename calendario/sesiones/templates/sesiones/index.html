@@ -6,16 +6,10 @@
     <strong>{{ group }}</strong>
 </div>
 <div class="text-sm-center text-md-right my-5">
-    <button type="button" class="btn btn-success" onclick="addSessionGroup({{ idGroup }})">
+    <a class="btn btn-success" href="addSessionGroup">
         Agregar Sesión
-    </button>
+    </a>
 </div>
-
- <form method="post" novalidate>
-  {% csrf_token %}
-  {{ form }}
-  <button type="submit">Submit</button>
-</form>
    
 {% if empty == 1 %}
     No hay sesiones
