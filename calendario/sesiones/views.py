@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from django.shortcuts import redirect
 
 from django.http import HttpResponse
 from django.http import Http404
@@ -16,6 +17,7 @@ def calendarioFundamentos(request):
     }
     context = checkSessions(sessions, context)
 
+    print(context)
     return render(request, 'sesiones/index.html', context)
 
 def calendarioLenguajes(request):
@@ -48,14 +50,30 @@ def checkSessions(sessions, context):
     return context
 
 def addSessionGroup(request):
-    form = AddSessionForm()
-    context = { 'form': form }
-    return render(request, 'sesiones/forms/agregar.html', context)
+    if request.method == 'POST':
+        form = AddSessionForm(request.POST)
+        if form.is_valid():
+            lastSession = Session.objects.latest('idSession')
+            calendar = Calendar.objects.get(idCalendar=1)
+            s = Session()
+            s.name = request.POST.get('name')
+            s.content = request.POST.get('content')
+            if request.POST.get('isClass'):
+                s.isClass = request.POST.get('isClass')
+            else:
+                s.isClass = False
+            s.setPosition(lastSession.idSession + 1)
+            s.setNext(lastSession.idSession + 1)
+            s.setPrevious(lastSession.idSession + 1)
+            s.save()
 
-def saveSessionGroup():
-    s = Session()
-    # s.name = request.POST.get('name')
-    # s.body = request.POST.get('body')
-    # s.type = sessionType
-    # s.save()
-    # if(request.POST.get('type') == 0): sessionType = True
+            cs = CalendarSession()
+            cs.session = s
+            cs.calendar = calendar
+            cs.save()
+
+            return redirect('calendarioFundamentos/')
+    else:
+        form = AddSessionForm()
+        context = { 'form': form }
+        return render(request, 'sesiones/forms/agregar.html', context)

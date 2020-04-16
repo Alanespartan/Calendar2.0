@@ -8,7 +8,8 @@
   <div class="text-center display-4">
     <strong>Agregar nueva sesión</strong>
   </div>
-    <form method="post" class="mt-2">
+    <form method="POST" action="addSessionGroup" class="mt-2">
+      {% csrf_token %}
       {{ form.media }}
       <div class="form-group row">
         <label for="session-name" class="col-sm-2 col-form-label">Nombre de la sesión</label>
