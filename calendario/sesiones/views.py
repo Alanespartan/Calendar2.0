@@ -14,11 +14,7 @@ def calendarioFundamentos(request):
         'group': "Fundamentos de programación",
         'idGroup': 1,
     }
-    if sessions:
-        context.update([ ('empty', 0) , ('sessions', sessions) ])
-    # Si la cantidad de sesiones es 0
-    else:
-        context.update([ ('empty', 1) ])
+    context = checkSessions(sessions, context)
 
     return render(request, 'sesiones/index.html', context)
 
@@ -28,11 +24,7 @@ def calendarioLenguajes(request):
         'group': "Lenguajes de programación",
         'idGroup': 2,
     }
-    if sessions:
-        context.update([ ('empty', 0) , ('sessions', sessions) ])
-    # Si la cantidad de sesiones es 0
-    else:
-        context.update([ ('empty', 1) ])
+    context = checkSessions(sessions, context)
 
     return render(request, 'sesiones/index.html', context)
 
@@ -42,27 +34,28 @@ def calendarioIA(request):
         'group': "Inteligencia Artificial",
         'idGroup': 3,
     }
+    context = checkSessions(sessions, context)
+
+    return render(request, 'sesiones/index.html', context)
+
+# Actualizar el diccionario "context" dependiendo si hay o no sesiones en el calendario
+def checkSessions(sessions, context):
     if sessions:
         context.update([ ('empty', 0) , ('sessions', sessions) ])
     # Si la cantidad de sesiones es 0
     else:
         context.update([ ('empty', 1) ])
-
-    return render(request, 'sesiones/index.html', context)
+    return context
 
 def addSessionGroup(request):
     form = AddSessionForm()
+    context = { 'form': form }
+    return render(request, 'sesiones/forms/agregar.html', context)
 
-
-    context = {
-        'form': form
-    }
-
-    # s = Session()
+def saveSessionGroup():
+    s = Session()
     # s.name = request.POST.get('name')
     # s.body = request.POST.get('body')
     # s.type = sessionType
     # s.save()
     # if(request.POST.get('type') == 0): sessionType = True
-
-    return render(request, 'sesiones/forms/agregar.html', context)
