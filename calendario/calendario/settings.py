@@ -74,17 +74,28 @@ TEMPLATES = [
 WSGI_APPLICATION = 'calendario.wsgi.application'
 
 # CKEDITOR CONFIGURATION
- 
+
 CKEDITOR_JQUERY_URL = 'https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js'
- 
+
 CKEDITOR_UPLOAD_PATH = 'uploads/'
 CKEDITOR_IMAGE_BACKEND = "pillow"
- 
+
 CKEDITOR_CONFIGS = {
     'default': {
-        'toolbar': None,
+        'toolbar': 'full',
+        'height': 400,
+        'width': 1000,
     },
 }
+
+# CUSTOM SETTINGS CKEDITOR
+#    'toolbar': 'Custom',
+#    'toolbar_Custom': [
+#        ['Bold', 'Italic', 'Underline'],
+#        ['NumberedList', 'BulletedList', '-', 'Outdent', 'Indent', '-', 'JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock'],
+#        ['Link', 'Unlink'],
+#        ['RemoveFormat', 'Source']
+#    ],
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
