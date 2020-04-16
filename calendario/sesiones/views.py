@@ -19,7 +19,35 @@ def calendarioFundamentos(request):
     # Si la cantidad de sesiones es 0
     else:
         context.update([ ('empty', 1) ])
-    print(context)
+
+    return render(request, 'sesiones/index.html', context)
+
+def calendarioLenguajes(request):
+    sessions = CalendarSession.objects.filter(calendar=2)
+    context = {
+        'group': "Lenguajes de programación",
+        'idGroup': 2,
+    }
+    if sessions:
+        context.update([ ('empty', 0) , ('sessions', sessions) ])
+    # Si la cantidad de sesiones es 0
+    else:
+        context.update([ ('empty', 1) ])
+
+    return render(request, 'sesiones/index.html', context)
+
+def calendarioIA(request):
+    sessions = CalendarSession.objects.filter(calendar=3)
+    context = {
+        'group': "Inteligencia Artificial",
+        'idGroup': 3,
+    }
+    if sessions:
+        context.update([ ('empty', 0) , ('sessions', sessions) ])
+    # Si la cantidad de sesiones es 0
+    else:
+        context.update([ ('empty', 1) ])
+
     return render(request, 'sesiones/index.html', context)
 
 def addSessionGroup(request):
