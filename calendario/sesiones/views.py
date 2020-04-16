@@ -1,5 +1,4 @@
-from django.shortcuts import render
-from django.shortcuts import redirect
+from django.shortcuts import render, redirect
 
 from django.http import HttpResponse
 from django.http import Http404
@@ -17,7 +16,6 @@ def calendarioFundamentos(request):
     }
     context = checkSessions(sessions, context)
 
-    print(context)
     return render(request, 'sesiones/index.html', context)
 
 def calendarioLenguajes(request):
@@ -59,7 +57,7 @@ def addSessionGroup(request):
             s.name = request.POST.get('name')
             s.content = request.POST.get('content')
             if request.POST.get('isClass'):
-                s.isClass = request.POST.get('isClass')
+                s.isClass = True
             else:
                 s.isClass = False
             s.setPosition(lastSession.idSession + 1)
