@@ -6,4 +6,5 @@ urlpatterns = [
     path('calendarioLenguajes/', views.calendarioLenguajes, name='calendarioLenguajes'),
     path('calendarioIA/', views.calendarioIA, name='calendarioIA'),
     path('addSessionGroup', views.addSessionGroup, name='addSessionGroup'),
+    path('', views.calendarioFundamentos, name='index'),
 ]
