@@ -6,3 +6,5 @@ calendario/calendario/__pycache__/forms.cpython-38.pyc
 calendario/calendario/__pycache__/models.cpython-38.pyc
 calendario/calendario/__pycache__/urls.cpython-38.pyc
 calendario/calendario/__pycache__/views.cpython-38.pyc
+calendario/sesiones/migrations/*
+calendario/ckeditor_uploader/management/__pycache__/*
