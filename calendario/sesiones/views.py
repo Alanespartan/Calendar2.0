@@ -8,6 +8,8 @@ from django.template import RequestContext
 from .models import Session, Calendar, CalendarSession
 from .forms import AddSessionForm
 
+import requests
+
 def calendarioFundamentos(request):
     setCurrentCalendar(1)
     sessions = CalendarSession.objects.filter(calendar=1)
