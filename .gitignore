@@ -1,3 +1,4 @@
 calendario/sesiones/migrations/*
 calendario/ckeditor_uploader/management/__pycache__/*
 calendario/sesiones/__pycache__/*
+calendario/calendario/__pycache__/*
