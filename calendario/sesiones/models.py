@@ -9,29 +9,20 @@ class Session(models.Model):
     content = models.CharField(max_length=1000, blank=True)
 
     position = models.IntegerField()
-    next_session = models.IntegerField()
-    previous_session = models.IntegerField()
-
-    def getPosition(self):
-        return self.position
-
-    def setPosition(self, newPosition):
-        self.position = newPosition
-
-    def setNext(self, newNext):
-        self.next_session = newNext
-
-    def getNext(self):
-        return self.next_session
-
-    def setPrevious(self, newPrevious):
-        self.previous_session = newPrevious
-
-    def getPrevious(self):
-        return self.previous_session
+    next = models.IntegerField()
+    previous = models.IntegerField()
 
     def __str__(self):
         return "%s %s" % (self.idSession, self.name)
+    
+    def get_position(self):
+        return self.position
+
+    def get_next(self):
+        return self.next
+
+    def get_previous(self):
+        return self.previous
 
 class Calendar(models.Model):
     idCalendar = models.AutoField(primary_key=True)
@@ -41,6 +32,12 @@ class Calendar(models.Model):
 
     def __str__(self):
         return "%s" % (self.name)
+
+    def get_tail(self):
+        return self.tail
+
+    def get_head(self):
+        return self.head
 
 class CalendarSession(models.Model):
     idCalendarSession = models.AutoField(primary_key=True)

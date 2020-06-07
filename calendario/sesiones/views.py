@@ -56,11 +56,9 @@ def addSessionGroup(request):
     if request.method == 'POST':
         form = AddSessionForm(request.POST)
         if form.is_valid():
-            lastSession = Session.objects.latest('idSession')
-            
             currentCalendar = request.session['currentCalendar']
-
             calendar = Calendar.objects.get(idCalendar = currentCalendar)
+            
             s = Session()
             s.name = request.POST.get('name')
             s.content = request.POST.get('content')
@@ -70,6 +68,7 @@ def addSessionGroup(request):
             else:
                 s.isClass = False
             
+            lastSession = Session.objects.latest('idSession')
             s.setPosition(lastSession.idSession + 1)
             s.setNext(lastSession.idSession + 1)
             s.setPrevious(lastSession.idSession + 1)
