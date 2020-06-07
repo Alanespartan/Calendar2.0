@@ -9,6 +9,7 @@ from .models import Session, Calendar, CalendarSession
 from .forms import AddSessionForm
 
 def calendarioFundamentos(request):
+    setCurrentCalendar(1)
     sessions = CalendarSession.objects.filter(calendar=1)
     context = {
         'group': "Fundamentos de programación",
@@ -19,6 +20,7 @@ def calendarioFundamentos(request):
     return render(request, 'sesiones/index.html', context)
 
 def calendarioLenguajes(request):
+    setCurrentCalendar(2)
     sessions = CalendarSession.objects.filter(calendar=2)
     context = {
         'group': "Lenguajes de programación",
@@ -29,6 +31,7 @@ def calendarioLenguajes(request):
     return render(request, 'sesiones/index.html', context)
 
 def calendarioIA(request):
+    setCurrentCalendar(3)
     sessions = CalendarSession.objects.filter(calendar=3)
     context = {
         'group': "Inteligencia Artificial",
@@ -75,3 +78,9 @@ def addSessionGroup(request):
         form = AddSessionForm()
         context = { 'form': form }
         return render(request, 'sesiones/forms/agregar.html', context)
+
+def setCurrentCalendar(calendar):
+    request.session['currentCalendar'] = calendar
+
+def getCurrentCalendar():
+    return request.session['currentCalendar']

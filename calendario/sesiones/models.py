@@ -48,4 +48,4 @@ class CalendarSession(models.Model):
     session = models.ForeignKey(Session,on_delete=models.CASCADE)
 
     def __str__(self):
-        return "%s %s" % (self.calendar, self.session)
+        return "%s" % (self.session)
