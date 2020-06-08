@@ -68,12 +68,21 @@ def addSessionGroup(request):
             else:
                 s.isClass = False
             
-            lastSession = Session.objects.latest('idSession')
-            s.setPosition(lastSession.idSession + 1)
-            s.setNext(lastSession.idSession + 1)
-            s.setPrevious(lastSession.idSession + 1)
             s.save()
 
+            # Actualizamos el tail del calendario si no es la primer sesion agregada
+            ct = calendar.get_tail()
+            if(ct != 0): 
+                ls = Session.objects.get(idSession = ct)
+                ls.next = s.get_idSession()
+                ls.save()
+                s.previous = ls.get_idSession()
+                s.save()
+            
+            calendar.tail = s.get_idSession()
+            calendar.save()
+            
+            # Guardamos la relación
             cs = CalendarSession()
             cs.session = s
             cs.calendar = calendar
