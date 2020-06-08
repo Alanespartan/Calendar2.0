@@ -18,7 +18,6 @@ def calendarioFundamentos(request):
         'idGroup': 1,
     }
     context = checkSessions(sessions, context)
-
     return render(request, 'sesiones/index.html', context)
 
 def calendarioLenguajes(request):
@@ -98,3 +97,51 @@ def addSessionGroup(request):
         form = AddSessionForm()
         context = { 'form': form }
         return render(request, 'sesiones/forms/agregar.html', context)
+
+def replaceSessionGroup(request, id):
+    print(id)
+    if request.method == 'POST':
+        form = AddSessionForm(request.POST)
+        if form.is_valid():
+            currentCalendar = request.session['currentCalendar']
+            calendar = Calendar.objects.get(idCalendar = currentCalendar)
+            
+            s = Session()
+            s.name = request.POST.get('name')
+            s.content = request.POST.get('content')
+            
+            if request.POST.get('isClass'):
+                s.isClass = True
+            else:
+                s.isClass = False
+            
+            s.save()
+
+            # Actualizamos el tail del calendario si no es la primer sesion agregada
+            ct = calendar.get_tail()
+            if(ct != 0): 
+                ls = Session.objects.get(idSession = ct)
+                ls.next = s.get_idSession()
+                ls.save()
+                s.previous = ls.get_idSession()
+                s.save()
+            
+            calendar.tail = s.get_idSession()
+            calendar.save()
+            
+            # Guardamos la relación
+            cs = CalendarSession()
+            cs.session = s
+            cs.calendar = calendar
+            cs.save()
+
+            if(currentCalendar == 1):
+                return redirect('calendarioFundamentos/')
+            if(currentCalendar == 2):
+                return redirect('calendarioLenguajes/')
+            if(currentCalendar == 3):
+                return redirect('calendarioIA/')
+    else:
+        form = AddSessionForm()
+        context = { 'form': form }
+        return render(request, 'sesiones/forms/reemplazar.html', context)

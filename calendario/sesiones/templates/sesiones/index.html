@@ -28,12 +28,13 @@
             <div class="card-body">
                 <div class="row">
                     <div class="w-75">
-                        <h5 class="card-title">{{ s }}</h5>
+                        <h5 class="card-title">{{ s.session.name }}</h5>
                     </div>
                     <div class="w-25">
-                        <button type="button" class="btn btn-primary btn-sm">
+                        <a class="btn btn-primary btn-sm"
+                        href="{% url 'replaceSessionGroup' s.session.idSession %}">
                             <i class="fas fa-plus fa-xs"></i>
-                        </button>
+                        </a>
                         <button type="button" class="btn btn-danger btn-sm">
                             <i class="fas fa-trash fa-xs"></i>
                         </button>
