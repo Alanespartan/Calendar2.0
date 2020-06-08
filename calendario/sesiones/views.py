@@ -98,8 +98,7 @@ def addSessionGroup(request):
         context = { 'form': form }
         return render(request, 'sesiones/forms/agregar.html', context)
 
-def replaceSessionGroup(request, id):
-    print(id)
+def replacedSessionGroup(request):
     if request.method == 'POST':
         form = AddSessionForm(request.POST)
         if form.is_valid():
@@ -117,17 +116,22 @@ def replaceSessionGroup(request, id):
             
             s.save()
 
-            # Actualizamos el tail del calendario si no es la primer sesion agregada
-            ct = calendar.get_tail()
-            if(ct != 0): 
-                ls = Session.objects.get(idSession = ct)
-                ls.next = s.get_idSession()
-                ls.save()
-                s.previous = ls.get_idSession()
-                s.save()
+            rs = Session.objects.get(idSession = request.session['replacedSession'])
+            rsp = Session.objects.get(idSession = rs.previous)
             
-            calendar.tail = s.get_idSession()
-            calendar.save()
+            if(rs.previous != 0): 
+                rsp.next = s.get_idSession()
+                rs.previous = s.get_idSession()
+                
+                rs.save()
+                rsp.save()  
+                
+                s.previous = rsp.get_idSession()
+                s.next = rs.get_idSession()
+                s.save()
+            else:
+                s.next = rs.get_idSession()
+                rs.previous = s.get_idSession()
             
             # Guardamos la relación
             cs = CalendarSession()
@@ -141,7 +145,9 @@ def replaceSessionGroup(request, id):
                 return redirect('calendarioLenguajes/')
             if(currentCalendar == 3):
                 return redirect('calendarioIA/')
-    else:
-        form = AddSessionForm()
-        context = { 'form': form }
-        return render(request, 'sesiones/forms/reemplazar.html', context)
+
+def formReplacedSession(request, id):
+    request.session['replacedSession'] = id # Variable de sesión para saber que sesion recorrer
+    form = AddSessionForm()
+    context = { 'form': form }
+    return render(request, 'sesiones/forms/reemplazar.html', context)

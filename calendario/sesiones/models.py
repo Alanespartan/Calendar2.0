@@ -11,6 +11,9 @@ class Session(models.Model):
     next = models.IntegerField(null=True, blank=True)
     previous = models.IntegerField(null=True, blank=True)
 
+    def __str__(self):
+        return "%s - ID: %s" % (self.name, self.idSession)
+
     def get_next(self):
         if self.next:
             return self.next
