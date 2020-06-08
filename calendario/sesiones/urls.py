@@ -8,6 +8,8 @@ urlpatterns = [
     path('calendarioIA/', views.calendarioIA, name='calendarioIA'),
     path('addSessionGroup', views.addSessionGroup, name='addSessionGroup'),
     url(r'^formReplacedSession/(?P<id>\d+)/$', views.formReplacedSession, name='formReplacedSession'),
+    url(r'^formDeleteSession/(?P<id>\d+)/$', views.formDeleteSession, name='formDeleteSession'),
     path('replacedSessionGroup', views.replacedSessionGroup, name='replacedSessionGroup'),
+    path('deleteSessionGroup', views.deleteSessionGroup, name='deleteSessionGroup'),
     path('', views.calendarioFundamentos, name='index'),
 ]

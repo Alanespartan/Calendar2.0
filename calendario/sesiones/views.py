@@ -12,7 +12,7 @@ import requests
 
 def calendarioFundamentos(request):
     request.session['currentCalendar'] = 1 # Variable de sesión para saber el calendario actual
-    sessions = CalendarSession.objects.filter(calendar=1)
+    sessions = CalendarSession.objects.filter(calendar=1).order_by('session__next')
     context = {
         'group': "Fundamentos de programación",
         'idGroup': 1,
@@ -117,9 +117,9 @@ def replacedSessionGroup(request):
             s.save()
 
             rs = Session.objects.get(idSession = request.session['replacedSession'])
-            rsp = Session.objects.get(idSession = rs.previous)
             
-            if(rs.previous != 0): 
+            if(rs.get_previous() != 0):
+                rsp = Session.objects.get(idSession = rs.previous)
                 rsp.next = s.get_idSession()
                 rs.previous = s.get_idSession()
                 
@@ -147,7 +147,55 @@ def replacedSessionGroup(request):
                 return redirect('calendarioIA/')
 
 def formReplacedSession(request, id):
-    request.session['replacedSession'] = id # Variable de sesión para saber que sesion recorrer
+    request.session['replacedSession'] = id
     form = AddSessionForm()
     context = { 'form': form }
     return render(request, 'sesiones/forms/reemplazar.html', context)
+
+def deleteSessionGroup(request):
+    if request.method == 'POST':
+        currentCalendar = request.session['currentCalendar']
+        calendar = Calendar.objects.get(idCalendar = currentCalendar)
+
+        s = Session.objects.get(idSession = request.session['deleteSession'])
+        ct = calendar.get_tail()
+
+        if(s.get_previous() != 0): 
+            ps = Session.objects.get(idSession = s.previous)
+            if(s.get_next() != 0):
+                ns = Session.objects.get(idSession = s.next)
+                ps.next = ns.get_idSession()
+                ns.previous = ps.get_idSession()
+                ns.save()
+            else:
+                ps.next = None
+                # Si el borrado es el tail del calendario y hay un previo, asignamos ese como el tail
+                if(ct == s.get_idSession()):
+                    calendar.tail = ps.get_idSession()
+                    calendar.save()
+            ps.save()
+        else:
+            if(s.get_next() != 0):
+                ns = Session.objects.get(idSession = s.next)
+                ns.previous = None
+                ns.save()
+            # Si el borrado es el tail del calendario y no hay un previo
+            if(ct == s.get_idSession()):
+                calendar.tail = None
+                calendar.save()
+
+        # Borramos en bd las entradas
+        cs = CalendarSession.objects.get(session = s)
+        cs.delete()
+        s.delete()
+
+        if(currentCalendar == 1):
+            return redirect('calendarioFundamentos/')
+        if(currentCalendar == 2):
+            return redirect('calendarioLenguajes/')
+        if(currentCalendar == 3):
+            return redirect('calendarioIA/')
+
+def formDeleteSession(request, id):
+    request.session['deleteSession'] = id
+    return render(request, 'sesiones/forms/borrar.html')
