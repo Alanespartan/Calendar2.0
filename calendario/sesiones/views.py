@@ -71,10 +71,15 @@ def getSessions(id):
 def checkSessions(sessions, context):
     if sessions:
         context.update([ ('empty', 0) , ('sessions', sessions) ])
-    # Si la cantidad de sesiones es 0
     else:
         context.update([ ('empty', 1) ])
     return context
+
+def consultSession(request, id):
+    session = Session.objects.get(idSession = id)
+    context = { 'session': session }
+    return render(request, 'sesiones/consult.html', context)
+    
 
 def addSessionGroup(request):
     if request.method == 'POST':
@@ -157,6 +162,9 @@ def replacedSessionGroup(request):
             else:
                 s.next = rs.get_idSession()
                 rs.previous = s.get_idSession()
+
+                s.save()
+                rs.save()
             
             # Guardamos la relación
             cs = CalendarSession()

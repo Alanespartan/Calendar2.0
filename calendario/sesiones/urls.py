@@ -9,6 +9,7 @@ urlpatterns = [
     path('addSessionGroup', views.addSessionGroup, name='addSessionGroup'),
     url(r'^formReplacedSession/(?P<id>\d+)/$', views.formReplacedSession, name='formReplacedSession'),
     url(r'^formDeleteSession/(?P<id>\d+)/$', views.formDeleteSession, name='formDeleteSession'),
+    url(r'^consultSession/(?P<id>\d+)/$', views.consultSession, name='consultSession'),
     path('replacedSessionGroup', views.replacedSessionGroup, name='replacedSessionGroup'),
     path('deleteSessionGroup', views.deleteSessionGroup, name='deleteSessionGroup'),
     path('', views.calendarioFundamentos, name='index'),
