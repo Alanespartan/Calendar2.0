@@ -12,7 +12,8 @@ import requests
 
 def calendarioFundamentos(request):
     request.session['currentCalendar'] = 1 # Variable de sesión para saber el calendario actual
-    sessions = CalendarSession.objects.filter(calendar=1).order_by('session__next')
+    sessions = getSessions(1)
+    
     context = {
         'group': "Fundamentos de programación",
         'idGroup': 1,
@@ -22,7 +23,7 @@ def calendarioFundamentos(request):
 
 def calendarioLenguajes(request):
     request.session['currentCalendar'] = 2 # Variable de sesión para saber el calendario actual
-    sessions = CalendarSession.objects.filter(calendar=2)
+    sessions = getSessions(2)
     context = {
         'group': "Lenguajes de programación",
         'idGroup': 2,
@@ -33,7 +34,7 @@ def calendarioLenguajes(request):
 
 def calendarioIA(request):
     request.session['currentCalendar'] = 3 # Variable de sesión para saber el calendario actual
-    sessions = CalendarSession.objects.filter(calendar=3)
+    sessions = getSessions(3)
     context = {
         'group': "Inteligencia Artificial",
         'idGroup': 3,
@@ -42,7 +43,31 @@ def calendarioIA(request):
 
     return render(request, 'sesiones/index.html', context)
 
-# Actualizar el diccionario "context" dependiendo si hay o no sesiones en el calendario
+def getSessions(id):
+    sessions = CalendarSession.objects.filter(calendar = id)
+    calendar = Calendar.objects.get(idCalendar = id)
+    tail = None
+    ordered = []
+
+    for session in sessions:
+        if(session.session.idSession == calendar.tail):
+            tail = session.session
+    
+    if(tail != None):
+        while True:
+            if(tail.previous == 0):
+                break;
+            else:
+                ordered.append(tail)
+                try:
+                    tail = Session.objects.get(idSession = tail.previous)
+                except:
+                    break;
+        ordered.reverse()
+        return ordered
+    else:
+        return None
+
 def checkSessions(sessions, context):
     if sessions:
         context.update([ ('empty', 0) , ('sessions', sessions) ])

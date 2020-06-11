@@ -24,19 +24,23 @@
 </div>
 <div class="row mx-0"> <!-- Empieza row div -->
     {% for s in sessions %}
-        <div class="card col-6 bg-info">
+        {% if s.isClass %}
+            <div class="card col-6 bg-info">
+        {% else %}
+            <div class="card col-6 bg-warning">
+        {% endif %}
             <div class="card-body">
                 <div class="row">
                     <div class="w-75">
-                        <h5 class="card-title">{{ s.session.name }}</h5>
+                        <h5 class="card-title">{{ s.name }}</h5>
                     </div>
                     <div class="w-25">
                         <a class="btn btn-primary btn-sm"
-                        href="{% url 'formReplacedSession' s.session.idSession %}">
+                        href="{% url 'formReplacedSession' s.idSession %}">
                             <i class="fas fa-plus fa-xs"></i>
                         </a>
                         <a class="btn btn-danger btn-sm"
-                        href="{% url 'formDeleteSession' s.session.idSession %}">
+                        href="{% url 'formDeleteSession' s.idSession %}">
                             <i class="fas fa-trash fa-xs"></i>
                         </a>
                         <button type="button" class="btn btn-dark btn-sm">
